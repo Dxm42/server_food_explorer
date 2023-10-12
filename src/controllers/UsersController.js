@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt")
 const AppError = require("../utils/AppError")
 const sqliteConnection = require("../database/sqlite")
 
@@ -14,7 +15,11 @@ class UserController {
       throw new AppError("Este e-mail já está em uso")
     }
 
-    await database.run("INSERT INTO users(name, email, password, isAdmin) VALUES (?, ?, ?, ?)",[name, email, password, isAdmin])
+   
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    console.log(isAdmin)
+    await database.run("INSERT INTO users(name, email, password) VALUES (?, ?, ?)",[name, email, hashedPassword])
 
     return response.status(201).json()
   }
