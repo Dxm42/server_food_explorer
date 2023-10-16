@@ -2,7 +2,9 @@ const knex = require("../database/knex")
 
 class DishesController{
   async create(request, response){
-    const {id_admin, name, description, category, ingredients, price, image } = request.body
+    const { id_admin, name, description, category, ingredients, price, image } = request.body
+
+    const{ id } = request.params    
        
     
     await knex("dishes").insert({
@@ -14,11 +16,16 @@ class DishesController{
       image
     })
 
-    const ingredientsInsert = ingredients.map(tag => {
+    console.log(id)
+    const ingredientsInsert = ingredients.map(name => {
       return {
-        name: tag
+        dishes_id: id,
+        admin_id: id_admin,
+        name: name
       }
     })
+
+    console.log(id)
     await knex("ingredients").insert(ingredientsInsert)
     
 
@@ -38,7 +45,7 @@ class DishesController{
   async delete(request, response){
     const { id } = request.params
 
-    await knex("dishes").where({id}).delete()
+    await knex("dishes").where({id}).delete()   
 
     return response.json()
   }

@@ -6,7 +6,7 @@ const DishesController = require("../controllers/DishesController")
 
 const dishesController = new DishesController()
 
-dishesRoutes.post("/", dishesController.create)
+dishesRoutes.post("/:id", dishesController.create)
 dishesRoutes.get("/:id", dishesController.show)
 dishesRoutes.delete("/:id", dishesController.delete)
 
